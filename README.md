@@ -262,6 +262,7 @@
 </head>
 <body>
   <audio id="morseAudio" src="Music.mp3" preload="auto"></audio>
+  <audio id="aktorAudio" src="aktor.mp3" preload="auto"></audio>
 
   <header class="header">
     <div class="avatar">
@@ -288,6 +289,29 @@
           </defs>
           <text font-size="11" font-weight="700" fill="rgba(255,255,255,0.75)" letter-spacing="1">
             <textPath href="#circle" startOffset="0%" text-anchor="start">
+              🎵 PLAY ME &nbsp;•&nbsp; اضغط علي &nbsp;•&nbsp; 我来播放 &nbsp;•&nbsp; क्लिक करे &nbsp;•&nbsp; クリック &nbsp;•&nbsp; Klik Mig &nbsp;•&nbsp; 🎵 PLAY ME
+            </textPath>
+          </text>
+        </svg>
+        <div class="morse-circle">
+          <div class="morse-emoticon">:(</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="quote-fa">فهمیدم دل خوش نکنم به این رویش<br>به قول ونگوگ، غم همیشه باقیه</div>
+    <div class="en-text">I realized I shouldn't get my hopes up over this blooming:<br>As Van Gogh said, "The sadness will last forever."</div>
+
+    <div class="morse-container">
+      <div class="circular-morse" id="aktorButton">
+        <svg class="morse-text-svg" viewBox="0 0 240 240">
+          <defs>
+            <path id="circle2" d="M 120, 120 m -105, 0 a 105,105 0 1,1 210,0 a 105,105 0 1,1 -210,0" fill="none" />
+          </defs>
+          <text font-size="11" font-weight="700" fill="rgba(255,255,255,0.75)" letter-spacing="1">
+            <textPath href="#circle2" startOffset="0%" text-anchor="start">
               🎵 PLAY ME &nbsp;•&nbsp; اضغط علي &nbsp;•&nbsp; 我来播放 &nbsp;•&nbsp; क्लिक करे &nbsp;•&nbsp; クリック &nbsp;•&nbsp; Klik Mig &nbsp;•&nbsp; 🎵 PLAY ME
             </textPath>
           </text>
@@ -326,31 +350,46 @@
     });
     updateAvatarPosition();
 
-    // موسیقی - کلیک روی دایره کد مورس
-    const morseButton = document.getElementById('morseButton');
-    const morseAudio = document.getElementById('morseAudio');
+    // موسیقی - کلیک روی دایره‌های پخش
     const playingIndicator = document.getElementById('playingIndicator');
 
-    morseButton.addEventListener('click', (e) => {
-      e.preventDefault();
-      
-      if (morseAudio.paused) {
-        morseAudio.play()
-          .then(() => {
-            playingIndicator.classList.add('active');
-          })
-          .catch(() => {
-            console.log('خطا در پخش صدا');
-          });
-      } else {
-        morseAudio.pause();
-        morseAudio.currentTime = 0;
-        playingIndicator.classList.remove('active');
-      }
-    });
+    const players = [
+      { button: document.getElementById('morseButton'), audio: document.getElementById('morseAudio') },
+      { button: document.getElementById('aktorButton'), audio: document.getElementById('aktorAudio') }
+    ];
 
-    morseAudio.addEventListener('ended', () => {
-      playingIndicator.classList.remove('active');
+    function stopAll(except) {
+      players.forEach(p => {
+        if (p.audio !== except) {
+          p.audio.pause();
+          p.audio.currentTime = 0;
+        }
+      });
+    }
+
+    players.forEach(({ button, audio }) => {
+      button.addEventListener('click', (e) => {
+        e.preventDefault();
+
+        if (audio.paused) {
+          stopAll(audio);
+          audio.play()
+            .then(() => {
+              playingIndicator.classList.add('active');
+            })
+            .catch(() => {
+              console.log('خطا در پخش صدا');
+            });
+        } else {
+          audio.pause();
+          audio.currentTime = 0;
+          playingIndicator.classList.remove('active');
+        }
+      });
+
+      audio.addEventListener('ended', () => {
+        playingIndicator.classList.remove('active');
+      });
     });
   </script>
 </body>
