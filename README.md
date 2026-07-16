@@ -39,21 +39,41 @@
     .avatar {
       width: 120px;
       height: 120px;
-      border-radius: 50%;
       position: absolute;
       left: 50%;
       bottom: -60px;
       transform: translateX(-50%);
+    }
+
+    .avatar-frame {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
       background: linear-gradient(135deg, #2d1052, #12071f);
       border: 3px solid #a855f7;
       box-shadow: 0 0 35px rgba(168, 85, 247, 0.55);
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      pointer-events: none;
+      transition: opacity 0.05s linear;
     }
 
-    .avatar img {
+    .avatar-shards {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      overflow: hidden;
+    }
+
+    .shard {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #2d1052, #12071f);
+      transform: translate(calc(var(--tx) * var(--p, 0)), calc(var(--ty) * var(--p, 0))) rotate(calc(var(--rot) * var(--p, 0)));
+      will-change: transform;
+    }
+
+    .shard img {
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -264,11 +284,31 @@
 <body>
   <audio id="morseAudio" src="Music.mp3" preload="auto"></audio>
   <audio id="aktorAudio" src="aktor.mp3" preload="auto"></audio>
+  <audio id="totoAudio" src="toto.mp3" preload="auto"></audio>
 
   <header class="header">
-    <div class="avatar">
-      <!-- عکس خودت رو با اسم avatar.jpg کنار این فایل بذار -->
-      <img src="avatar.jpg" alt="avatar" onerror="this.style.display='none'" />
+    <div class="avatar" id="avatar">
+      <div class="avatar-frame" id="avatarFrame"></div>
+      <div class="avatar-shards" id="avatarShards">
+        <!-- عکس خودت رو با اسم avatar.jpg کنار این فایل بذار -->
+        <div class="shard" data-power="1.18" style="clip-path:polygon(50% 50%,50.00% 0.00%,73.53% 0.00%); --tx:63px; --ty:-168px; --rot:-69deg;"><img src="avatar.jpg" alt="" onerror="this.style.display='none'" /></div>
+        <div class="shard" data-power="1.18" style="clip-path:polygon(50% 50%,73.53% 0.00%,97.06% 0.00%); --tx:-38px; --ty:-197px; --rot:-40deg;"><img src="avatar.jpg" alt="" onerror="this.style.display='none'" /></div>
+        <div class="shard" data-power="0.89" style="clip-path:polygon(50% 50%,97.06% 0.00%,100.00% 20.59%); --tx:73px; --ty:-329px; --rot:64deg;"><img src="avatar.jpg" alt="" onerror="this.style.display='none'" /></div>
+        <div class="shard" data-power="0.89" style="clip-path:polygon(50% 50%,100.00% 20.59%,100.00% 44.12%); --tx:8px; --ty:-148px; --rot:-68deg;"><img src="avatar.jpg" alt="" onerror="this.style.display='none'" /></div>
+        <div class="shard" data-power="1.1" style="clip-path:polygon(50% 50%,100.00% 44.12%,100.00% 67.65%); --tx:-41px; --ty:-269px; --rot:-69deg;"><img src="avatar.jpg" alt="" onerror="this.style.display='none'" /></div>
+        <div class="shard" data-power="1.04" style="clip-path:polygon(50% 50%,100.00% 67.65%,100.00% 91.18%); --tx:83px; --ty:-306px; --rot:64deg;"><img src="avatar.jpg" alt="" onerror="this.style.display='none'" /></div>
+        <div class="shard" data-power="1.21" style="clip-path:polygon(50% 50%,100.00% 91.18%,85.29% 100.00%); --tx:14px; --ty:-290px; --rot:-4deg;"><img src="avatar.jpg" alt="" onerror="this.style.display='none'" /></div>
+        <div class="shard" data-power="1.16" style="clip-path:polygon(50% 50%,85.29% 100.00%,61.76% 100.00%); --tx:-99px; --ty:-334px; --rot:-35deg;"><img src="avatar.jpg" alt="" onerror="this.style.display='none'" /></div>
+        <div class="shard" data-power="0.95" style="clip-path:polygon(50% 50%,61.76% 100.00%,38.24% 100.00%); --tx:-13px; --ty:-211px; --rot:-36deg;"><img src="avatar.jpg" alt="" onerror="this.style.display='none'" /></div>
+        <div class="shard" data-power="0.89" style="clip-path:polygon(50% 50%,38.24% 100.00%,14.71% 100.00%); --tx:95px; --ty:-226px; --rot:-49deg;"><img src="avatar.jpg" alt="" onerror="this.style.display='none'" /></div>
+        <div class="shard" data-power="1.12" style="clip-path:polygon(50% 50%,14.71% 100.00%,0.00% 91.18%); --tx:-76px; --ty:-231px; --rot:13deg;"><img src="avatar.jpg" alt="" onerror="this.style.display='none'" /></div>
+        <div class="shard" data-power="1.09" style="clip-path:polygon(50% 50%,0.00% 91.18%,0.00% 67.65%); --tx:-89px; --ty:-326px; --rot:42deg;"><img src="avatar.jpg" alt="" onerror="this.style.display='none'" /></div>
+        <div class="shard" data-power="0.98" style="clip-path:polygon(50% 50%,0.00% 67.65%,0.00% 44.12%); --tx:-4px; --ty:-160px; --rot:66deg;"><img src="avatar.jpg" alt="" onerror="this.style.display='none'" /></div>
+        <div class="shard" data-power="1.11" style="clip-path:polygon(50% 50%,0.00% 44.12%,0.00% 20.59%); --tx:60px; --ty:-298px; --rot:17deg;"><img src="avatar.jpg" alt="" onerror="this.style.display='none'" /></div>
+        <div class="shard" data-power="1.15" style="clip-path:polygon(50% 50%,0.00% 20.59%,2.94% 0.00%); --tx:80px; --ty:-157px; --rot:-64deg;"><img src="avatar.jpg" alt="" onerror="this.style.display='none'" /></div>
+        <div class="shard" data-power="1.23" style="clip-path:polygon(50% 50%,2.94% 0.00%,26.47% 0.00%); --tx:97px; --ty:-214px; --rot:-55deg;"><img src="avatar.jpg" alt="" onerror="this.style.display='none'" /></div>
+        <div class="shard" data-power="1.05" style="clip-path:polygon(50% 50%,26.47% 0.00%,50.00% 0.00%); --tx:-75px; --ty:-237px; --rot:-4deg;"><img src="avatar.jpg" alt="" onerror="this.style.display='none'" /></div>
+      </div>
     </div>
   </header>
 
@@ -322,6 +362,28 @@
         </div>
       </div>
     </div>
+
+    <div class="divider"></div>
+
+    <div class="quote-fa">ـ حالا بزار روحِ من دور بشه اَزَت ـ</div>
+
+    <div class="morse-container">
+      <div class="circular-morse" id="totoButton">
+        <svg class="morse-text-svg" viewBox="0 0 240 240">
+          <defs>
+            <path id="circle3" d="M 120, 120 m -105, 0 a 105,105 0 1,1 210,0 a 105,105 0 1,1 -210,0" fill="none" />
+          </defs>
+          <text font-size="11" font-weight="700" fill="rgba(255,255,255,0.75)" letter-spacing="1">
+            <textPath href="#circle3" startOffset="0%" text-anchor="start">
+              🎵 PLAY ME &nbsp;•&nbsp; اضغط علي &nbsp;•&nbsp; 我来播放 &nbsp;•&nbsp; क्लिक करे &nbsp;•&nbsp; クリック &nbsp;•&nbsp; Klik Mig &nbsp;•&nbsp; 🎵 PLAY ME
+            </textPath>
+          </text>
+        </svg>
+        <div class="morse-circle">
+          <div class="morse-emoticon">:(</div>
+        </div>
+      </div>
+    </div>
   </main>
 
   <div class="gap-footer">
@@ -331,19 +393,30 @@
   <div class="playing-indicator" id="playingIndicator">🎵 در حال پخش...</div>
 
   <script>
-    // جابه‌جایی و کوچیک شدن تدریجی آواتار، متناسب با میزان اسکرول کاربر
-    const avatarEl = document.querySelector('.avatar');
+    // شکستن شیشه‌ای اواتار متناسب با میزان اسکرول، و بازسازی هنگام برگشت به بالای صفحه
+    const avatarEl = document.getElementById('avatar');
+    const avatarFrame = document.getElementById('avatarFrame');
+    const avatarShards = document.getElementById('avatarShards');
+    const shards = Array.from(avatarShards.querySelectorAll('.shard'));
     const scrollRange = 220;
-    const minScale = 0.55;
-    
+    const minScale = 0.85;
+
     function updateAvatarPosition() {
       const progress = Math.min(Math.max(window.scrollY / scrollRange, 0), 1);
-      const leftPercent = 50 + progress * 30;
       const scale = 1 - progress * (1 - minScale);
-      avatarEl.style.left = leftPercent + '%';
+
       avatarEl.style.transform = `translateX(-50%) scale(${scale})`;
+      avatarFrame.style.opacity = String(Math.max(0, 1 - progress * 1.2));
+      avatarShards.style.overflow = progress > 0.001 ? 'visible' : 'hidden';
+
+      shards.forEach((shard) => {
+        const power = parseFloat(shard.dataset.power) || 1;
+        const p = Math.pow(progress, power);
+        shard.style.setProperty('--p', p);
+        shard.style.opacity = String(1 - progress * 0.35);
+      });
     }
-    
+
     window.addEventListener('scroll', () => {
       requestAnimationFrame(updateAvatarPosition);
     });
@@ -354,7 +427,8 @@
 
     const players = [
       { button: document.getElementById('morseButton'), audio: document.getElementById('morseAudio') },
-      { button: document.getElementById('aktorButton'), audio: document.getElementById('aktorAudio') }
+      { button: document.getElementById('aktorButton'), audio: document.getElementById('aktorAudio') },
+      { button: document.getElementById('totoButton'), audio: document.getElementById('totoAudio') }
     ];
 
     function stopAll(except) {
