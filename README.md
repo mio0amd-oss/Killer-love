@@ -69,8 +69,27 @@
       width: 100%;
       height: 100%;
       background: linear-gradient(135deg, #2d1052, #12071f);
-      transform: translate(calc(var(--tx) * var(--p, 0)), calc(var(--ty) * var(--p, 0))) rotate(calc(var(--rot) * var(--p, 0)));
+      transform: translate(0, 0) rotate(0deg);
       will-change: transform;
+      filter: drop-shadow(3px 8px 10px rgba(0, 0, 0, 0.6)) drop-shadow(-1px -1px 0 rgba(255, 255, 255, 0.12));
+    }
+
+    .shard::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(125deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0.08) 18%, rgba(255, 255, 255, 0) 45%, rgba(255, 255, 255, 0) 70%, rgba(255, 255, 255, 0.2) 100%);
+      mix-blend-mode: overlay;
+      pointer-events: none;
+    }
+
+    .shard::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+      pointer-events: none;
     }
 
     .shard img {
@@ -387,40 +406,72 @@
   </main>
 
   <div class="gap-footer">
-    <footer class="footer">Perhaps the memory of you will never fade from my mind.</footer>
+    <footer class="footer" id="siteFooter">Perhaps the memory of you will never fade from my mind.</footer>
   </div>
 
   <div class="playing-indicator" id="playingIndicator">🎵 در حال پخش...</div>
 
   <script>
-    // شکستن شیشه‌ای اواتار متناسب با میزان اسکرول، و بازسازی هنگام برگشت به بالای صفحه
+    // شکستن شیشه‌ای اواتار با یک بار کلیک - تکه‌ها روی زمین، بالای متن فوتر، فرود میان و باقی می‌مونن
     const avatarEl = document.getElementById('avatar');
     const avatarFrame = document.getElementById('avatarFrame');
     const avatarShards = document.getElementById('avatarShards');
     const shards = Array.from(avatarShards.querySelectorAll('.shard'));
-    const scrollRange = 220;
-    const minScale = 0.85;
+    const siteFooter = document.getElementById('siteFooter');
+    let isBroken = false;
 
-    function updateAvatarPosition() {
-      const progress = Math.min(Math.max(window.scrollY / scrollRange, 0), 1);
-      const scale = 1 - progress * (1 - minScale);
+    avatarEl.style.cursor = 'pointer';
 
-      avatarEl.style.transform = `translateX(-50%) scale(${scale})`;
-      avatarFrame.style.opacity = String(Math.max(0, 1 - progress * 1.2));
-      avatarShards.style.overflow = progress > 0.001 ? 'visible' : 'hidden';
+    avatarEl.addEventListener('click', () => {
+      if (isBroken) return;
+      isBroken = true;
+      avatarEl.style.cursor = 'default';
+
+      const rect = avatarShards.getBoundingClientRect();
+      const footerRect = siteFooter.getBoundingClientRect();
+      // تبدیل مختصات به فضای سند (نه ویوپورت) تا با اسکرول صفحه هماهنگ بمونن
+      const startLeft = rect.left + window.scrollX;
+      const startTop = rect.top + window.scrollY;
+      // فضای کف: درست بالای متن فوتر، جایی که تکه‌ها روی هم بریزن
+      const floorY = footerRect.top + window.scrollY - 34;
+
+      avatarFrame.style.transition = 'opacity 0.3s ease';
+      avatarFrame.style.opacity = '0';
 
       shards.forEach((shard) => {
-        const power = parseFloat(shard.dataset.power) || 1;
-        const p = Math.pow(progress, power);
-        shard.style.setProperty('--p', p);
-        shard.style.opacity = String(1 - progress * 0.35);
-      });
-    }
+        // خارج کردن تکه از داخل هدر تا محدود به overflow والدش نشه
+        document.body.appendChild(shard);
 
-    window.addEventListener('scroll', () => {
-      requestAnimationFrame(updateAvatarPosition);
+        shard.style.position = 'absolute';
+        shard.style.left = startLeft + 'px';
+        shard.style.top = startTop + 'px';
+        shard.style.width = rect.width + 'px';
+        shard.style.height = rect.height + 'px';
+        shard.style.margin = '0';
+        shard.style.zIndex = '500';
+        shard.style.transform = 'translate(0px, 0px) rotate(0deg)';
+        shard.style.opacity = '1';
+
+        // ریفلو اجباری تا ترنزیشن از حالت اولیه شروع بشه
+        void shard.offsetWidth;
+
+        const tx = Math.round((Math.random() - 0.5) * 320);
+        const restY = Math.round((floorY - startTop) - 40 + Math.random() * 40);
+        const overshootY = restY + 25 + Math.round(Math.random() * 15);
+        const rot = Math.round((Math.random() - 0.5) * 500);
+        const delay = Math.round(Math.random() * 250);
+
+        // مرحله اول: افتادن شتاب‌دار به‌همراه کمی رد شدن از نقطه فرود
+        shard.style.transition = `transform 1.5s cubic-bezier(.55,.06,.68,.19) ${delay}ms`;
+        shard.style.transform = `translate(${tx}px, ${overshootY}px) rotate(${rot}deg)`;
+
+        // مرحله دوم: برگشت کوچیک به نقطه فرود نهایی (حس برخورد با زمین)
+        setTimeout(() => {
+          shard.style.transition = 'transform 0.35s cubic-bezier(.34,1.56,.64,1)';
+          shard.style.transform = `translate(${tx}px, ${restY}px) rotate(${rot}deg)`;
+        }, delay + 1480);
+      });
     });
-    updateAvatarPosition();
 
     // موسیقی - کلیک روی دایره‌های پخش
     const playingIndicator = document.getElementById('playingIndicator');
