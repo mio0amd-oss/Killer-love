@@ -445,6 +445,8 @@
         shard.style.position = 'absolute';
         shard.style.left = startLeft + 'px';
         shard.style.top = startTop + 'px';
+        shard.style.right = 'auto';
+        shard.style.bottom = 'auto';
         shard.style.width = rect.width + 'px';
         shard.style.height = rect.height + 'px';
         shard.style.margin = '0';
