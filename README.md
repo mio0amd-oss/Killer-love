@@ -47,8 +47,14 @@
     .star {
       position: absolute;
       border-radius: 50%;
-      background: #cfe0ff;
-      box-shadow: 0 0 4px rgba(180, 200, 255, 0.9);
+      background: #d8e6ff;
+      box-shadow: 0 0 6px 1px rgba(190, 210, 255, 0.95);
+      animation: twinkle ease-in-out infinite;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: var(--base-opacity); transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.35); }
     }
 
     body.custom-bg #stars { display: none; }
@@ -178,6 +184,13 @@
       cursor: pointer;
     }
 
+    .circular-morse:nth-child(odd) {
+      transform: translateX(42px);
+    }
+    .circular-morse:nth-child(even) {
+      transform: translateX(-42px);
+    }
+
     .morse-text-svg {
       position: absolute;
       inset: 0;
@@ -286,6 +299,7 @@
   <audio id="morseAudio" src="Music.mp3" preload="auto"></audio>
   <audio id="aktorAudio" src="aktor.mp3" preload="auto"></audio>
   <audio id="totoAudio" src="toto.mp3" preload="auto"></audio>
+  <audio id="extraAudio" src="extra.mp3" preload="auto"></audio>
 
   <div id="stars"></div>
 
@@ -353,11 +367,27 @@
           <div class="morse-symbol">ꕥ</div>
         </div>
       </div>
+
+      <div class="circular-morse" id="extraButton">
+        <svg class="morse-text-svg" viewBox="0 0 240 240">
+          <defs>
+            <path id="circlePath4" d="M 120, 120 m -105, 0 a 105,105 0 1,1 210,0 a 105,105 0 1,1 -210,0" fill="none" />
+          </defs>
+          <text>
+            <textPath href="#circlePath4" startOffset="0%" text-anchor="start">
+              MAYBE IN THE NEXT LIFE &nbsp;•&nbsp; MAYBE IN THE NEXT LIFE &nbsp;•&nbsp; MAYBE IN THE NEXT LIFE &nbsp;•&nbsp;
+            </textPath>
+          </text>
+        </svg>
+        <div class="morse-circle">
+          <div class="morse-symbol">ꕥ</div>
+        </div>
+      </div>
     </div>
   </main>
 
   <div class="gap-footer">
-    <footer class="footer" id="siteFooter">never see you</footer>
+    <footer class="footer" id="siteFooter">Maybe never see you</footer>
   </div>
 
   <div class="playing-indicator" id="playingIndicator">در حال پخش...</div>
@@ -378,16 +408,20 @@
     // ---- ساخت لایه ستاره‌های کهکشانی ----
     (function () {
       const starsContainer = document.getElementById('stars');
-      const starCount = 120;
+      const starCount = 180;
       for (let i = 0; i < starCount; i++) {
         const star = document.createElement('div');
         star.className = 'star';
-        const size = Math.random() * 2 + 0.6;
+        const size = Math.random() * 2.5 + 1.5;
+        const baseOpacity = (Math.random() * 0.5 + 0.5).toFixed(2);
         star.style.width = size + 'px';
         star.style.height = size + 'px';
         star.style.top = Math.random() * 100 + '%';
         star.style.left = Math.random() * 100 + '%';
-        star.style.opacity = (Math.random() * 0.6 + 0.25).toFixed(2);
+        star.style.setProperty('--base-opacity', baseOpacity);
+        star.style.opacity = baseOpacity;
+        star.style.animationDuration = (Math.random() * 3 + 2.5) + 's';
+        star.style.animationDelay = (Math.random() * 4) + 's';
         starsContainer.appendChild(star);
       }
     })();
@@ -398,7 +432,8 @@
     const players = [
       { button: document.getElementById('morseButton'), audio: document.getElementById('morseAudio') },
       { button: document.getElementById('aktorButton'), audio: document.getElementById('aktorAudio') },
-      { button: document.getElementById('totoButton'), audio: document.getElementById('totoAudio') }
+      { button: document.getElementById('totoButton'), audio: document.getElementById('totoAudio') },
+      { button: document.getElementById('extraButton'), audio: document.getElementById('extraAudio') }
     ];
 
     function stopAll(except) {
