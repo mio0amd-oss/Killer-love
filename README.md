@@ -168,27 +168,54 @@
       direction: ltr;
     }
 
-    /* ---- دایره‌های موسیقی عمودی ---- */
+    /* ---- دایره‌های موسیقی، هرکدوم توی یه ردیف جدا ---- */
     .morse-container {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 56px;
-      margin: 58px 0 20px;
+      gap: 92px;
+      margin: 58px 0 30px;
+      width: 100%;
+    }
+
+    .music-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      direction: ltr;
+      gap: 22px;
+      width: 100%;
+      max-width: 480px;
+      padding: 0 16px;
+    }
+
+    .row-text-left { flex-direction: row; }
+    .row-text-right { flex-direction: row-reverse; }
+    .row-no-text { justify-content: flex-start; }
+
+    .side-caption {
+      max-width: 150px;
+      text-align: center;
+      direction: rtl;
+      flex-shrink: 0;
+    }
+
+    .side-caption .fa-nastaliq {
+      font-size: clamp(0.95rem, 3.4vw, 1.2rem);
+      margin-bottom: 6px;
+    }
+
+    .side-caption .en-text {
+      font-size: clamp(0.7rem, 2.2vw, 0.85rem);
+      letter-spacing: 1.5px;
     }
 
     .circular-morse {
       position: relative;
-      width: 156px;
-      height: 156px;
+      width: 140px;
+      height: 140px;
       cursor: pointer;
-    }
-
-    .circular-morse:nth-child(odd) {
-      transform: translateX(42px);
-    }
-    .circular-morse:nth-child(even) {
-      transform: translateX(-42px);
+      flex-shrink: 0;
     }
 
     .morse-text-svg {
@@ -214,7 +241,7 @@
 
     .morse-circle {
       position: absolute;
-      inset: 24px;
+      inset: 20px;
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -310,7 +337,6 @@
         <img src="avatar.jpg" alt="avatar" onerror="this.style.display='none'" />
       </div>
     </div>
-    <div class="channel-name">subkazani</div>
   </header>
 
   <main class="content">
@@ -320,69 +346,95 @@
     </div>
 
     <div class="morse-container">
-      <div class="circular-morse" id="morseButton">
-        <svg class="morse-text-svg" viewBox="0 0 240 240">
-          <defs>
-            <path id="circlePath1" d="M 120, 120 m -105, 0 a 105,105 0 1,1 210,0 a 105,105 0 1,1 -210,0" fill="none" />
-          </defs>
-          <text>
-            <textPath href="#circlePath1" startOffset="0%" text-anchor="start">
-              MAYBE IN THE NEXT LIFE &nbsp;•&nbsp; MAYBE IN THE NEXT LIFE &nbsp;•&nbsp; MAYBE IN THE NEXT LIFE &nbsp;•&nbsp;
-            </textPath>
-          </text>
-        </svg>
-        <div class="morse-circle">
-          <div class="morse-symbol">ꕥ</div>
+
+      <!-- ردیف ۱: دایره سمت راست، متن سمت چپ -->
+      <div class="music-row row-text-left">
+        <div class="side-caption">
+          <div class="fa-nastaliq">گاهی جنگ برای ماندن محترم‌تر از صلح است برای رفتن</div>
+          <div class="en-text">Sometimes a war fought to stay is more honorable than a peace made to leave.</div>
+        </div>
+        <div class="circular-morse" id="morseButton">
+          <svg class="morse-text-svg" viewBox="0 0 240 240">
+            <defs>
+              <path id="circlePath1" d="M 120, 120 m -105, 0 a 105,105 0 1,1 210,0 a 105,105 0 1,1 -210,0" fill="none" />
+            </defs>
+            <text>
+              <textPath href="#circlePath1" startOffset="0%" text-anchor="start">
+                MAYBE IN THE NEXT LIFE &nbsp;•&nbsp; MAYBE IN THE NEXT LIFE &nbsp;•&nbsp; MAYBE IN THE NEXT LIFE &nbsp;•&nbsp;
+              </textPath>
+            </text>
+          </svg>
+          <div class="morse-circle">
+            <div class="morse-symbol">ꕥ</div>
+          </div>
         </div>
       </div>
 
-      <div class="circular-morse" id="aktorButton">
-        <svg class="morse-text-svg" viewBox="0 0 240 240">
-          <defs>
-            <path id="circlePath2" d="M 120, 120 m -105, 0 a 105,105 0 1,1 210,0 a 105,105 0 1,1 -210,0" fill="none" />
-          </defs>
-          <text>
-            <textPath href="#circlePath2" startOffset="0%" text-anchor="start">
-              MAYBE IN THE NEXT LIFE &nbsp;•&nbsp; MAYBE IN THE NEXT LIFE &nbsp;•&nbsp; MAYBE IN THE NEXT LIFE &nbsp;•&nbsp;
-            </textPath>
-          </text>
-        </svg>
-        <div class="morse-circle">
-          <div class="morse-symbol">ꕥ</div>
+      <!-- ردیف ۲: دایره سمت چپ، متن سمت راست -->
+      <div class="music-row row-text-right">
+        <div class="side-caption">
+          <div class="fa-nastaliq">به قول ون‌گوگ، غم همیشه باقیه</div>
+          <div class="en-text">As Van Gogh said, the sadness always remains.</div>
+        </div>
+        <div class="circular-morse" id="aktorButton">
+          <svg class="morse-text-svg" viewBox="0 0 240 240">
+            <defs>
+              <path id="circlePath2" d="M 120, 120 m -105, 0 a 105,105 0 1,1 210,0 a 105,105 0 1,1 -210,0" fill="none" />
+            </defs>
+            <text>
+              <textPath href="#circlePath2" startOffset="0%" text-anchor="start">
+                MAYBE IN THE NEXT LIFE &nbsp;•&nbsp; MAYBE IN THE NEXT LIFE &nbsp;•&nbsp; MAYBE IN THE NEXT LIFE &nbsp;•&nbsp;
+              </textPath>
+            </text>
+          </svg>
+          <div class="morse-circle">
+            <div class="morse-symbol">ꕥ</div>
+          </div>
         </div>
       </div>
 
-      <div class="circular-morse" id="totoButton">
-        <svg class="morse-text-svg" viewBox="0 0 240 240">
-          <defs>
-            <path id="circlePath3" d="M 120, 120 m -105, 0 a 105,105 0 1,1 210,0 a 105,105 0 1,1 -210,0" fill="none" />
-          </defs>
-          <text>
-            <textPath href="#circlePath3" startOffset="0%" text-anchor="start">
-              MAYBE IN THE NEXT LIFE &nbsp;•&nbsp; MAYBE IN THE NEXT LIFE &nbsp;•&nbsp; MAYBE IN THE NEXT LIFE &nbsp;•&nbsp;
-            </textPath>
-          </text>
-        </svg>
-        <div class="morse-circle">
-          <div class="morse-symbol">ꕥ</div>
+      <!-- ردیف ۳: دایره سمت راست، متن سمت چپ -->
+      <div class="music-row row-text-left">
+        <div class="side-caption">
+          <div class="fa-nastaliq">تو خودت خواستی !</div>
+          <div class="en-text">You wanted it yourself!</div>
+        </div>
+        <div class="circular-morse" id="totoButton">
+          <svg class="morse-text-svg" viewBox="0 0 240 240">
+            <defs>
+              <path id="circlePath3" d="M 120, 120 m -105, 0 a 105,105 0 1,1 210,0 a 105,105 0 1,1 -210,0" fill="none" />
+            </defs>
+            <text>
+              <textPath href="#circlePath3" startOffset="0%" text-anchor="start">
+                MAYBE IN THE NEXT LIFE &nbsp;•&nbsp; MAYBE IN THE NEXT LIFE &nbsp;•&nbsp; MAYBE IN THE NEXT LIFE &nbsp;•&nbsp;
+              </textPath>
+            </text>
+          </svg>
+          <div class="morse-circle">
+            <div class="morse-symbol">ꕥ</div>
+          </div>
         </div>
       </div>
 
-      <div class="circular-morse" id="extraButton">
-        <svg class="morse-text-svg" viewBox="0 0 240 240">
-          <defs>
-            <path id="circlePath4" d="M 120, 120 m -105, 0 a 105,105 0 1,1 210,0 a 105,105 0 1,1 -210,0" fill="none" />
-          </defs>
-          <text>
-            <textPath href="#circlePath4" startOffset="0%" text-anchor="start">
-              MAYBE IN THE NEXT LIFE &nbsp;•&nbsp; MAYBE IN THE NEXT LIFE &nbsp;•&nbsp; MAYBE IN THE NEXT LIFE &nbsp;•&nbsp;
-            </textPath>
-          </text>
-        </svg>
-        <div class="morse-circle">
-          <div class="morse-symbol">ꕥ</div>
+      <!-- ردیف ۴: فعلاً بدون متن، فقط دایره سمت چپ -->
+      <div class="music-row row-no-text">
+        <div class="circular-morse" id="extraButton">
+          <svg class="morse-text-svg" viewBox="0 0 240 240">
+            <defs>
+              <path id="circlePath4" d="M 120, 120 m -105, 0 a 105,105 0 1,1 210,0 a 105,105 0 1,1 -210,0" fill="none" />
+            </defs>
+            <text>
+              <textPath href="#circlePath4" startOffset="0%" text-anchor="start">
+                MAYBE IN THE NEXT LIFE &nbsp;•&nbsp; MAYBE IN THE NEXT LIFE &nbsp;•&nbsp; MAYBE IN THE NEXT LIFE &nbsp;•&nbsp;
+              </textPath>
+            </text>
+          </svg>
+          <div class="morse-circle">
+            <div class="morse-symbol">ꕥ</div>
+          </div>
         </div>
       </div>
+
     </div>
   </main>
 
